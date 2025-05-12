@@ -1,5 +1,5 @@
 import './App.css'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Link, useNavigate } from 'react-router-dom'
 import Home from './pages/home/Home'
 import Diary from './pages/diary/Diary'
 import New from './pages/new/New'
@@ -11,13 +11,27 @@ import NotFound from './pages/404/NotFound'
 */
 function App() {
 
+  const nav = useNavigate();
+
+  const onClickButton = ()=>{
+    nav("/new")
+  }
+
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/new' element={<New />} />
-      <Route path='/diary' element={<Diary />} />
-      <Route path='*' element={<NotFound />} />
-    </Routes>
+    <>
+      <div>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/new"}>New</Link>
+        <Link to={"/diary"}>Diary</Link>
+      </div>
+      <button onClick={onClickButton}>New페이지로 이동</button>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/new' element={<New />} />
+        <Route path='/diary' element={<Diary />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </>
   )
 }
 
