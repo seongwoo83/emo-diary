@@ -1,0 +1,22 @@
+.Button {
+    background-color: rgb(236, 236, 236);
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    white-space: nowrap;
+
+    &:hover{
+        outline: rgba($color: #000000, $alpha: 0.5);
+    }    
+} 
+
+.Button_POSITIVE{
+    background-color: rgb(100, 201, 100);
+    color: #fff;
+}
+.Button_NEGATIVE{
+    background-color: rgb(253, 86, 90);
+    color: #fff;
+}
