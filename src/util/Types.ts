@@ -1,3 +1,3 @@
-type ButtonType = "POSITIVE" | "DEFAULT" | "NEGATIVE"
+type ButtonType = "POSITIVE" | "DEFAULT" | "NEGATIVE";
 
 export type {ButtonType}

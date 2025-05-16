@@ -17,7 +17,9 @@ function App() {
   
   return (
     <>
-      <Header />
+      <Header title={"Header"}
+      leftChild={<Button text={"Left"} type={"DEFAULT"} onClick={()=>{}}/>}
+      rightChild={<Button text={"Right"} type={"DEFAULT"} onClick={()=>{}}/>} />
       <Button text="긍정" type="POSITIVE" onClick={()=>{}}/>
       <Routes>
         <Route path='/' element={<Home />} />
