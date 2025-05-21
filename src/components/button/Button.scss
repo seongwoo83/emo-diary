@@ -15,6 +15,10 @@
 .Button_POSITIVE{
     background-color: rgb(100, 201, 100);
     color: #fff;
+
+    &:hover{
+        background-color: rgb(91, 183, 91);
+    }
 }
 .Button_NEGATIVE{
     background-color: rgb(253, 86, 90);
