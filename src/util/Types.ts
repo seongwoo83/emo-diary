@@ -4,7 +4,7 @@ interface DiaryType{
     id: number;
     createdDate: number;
     emotionId: number;
-    content: string;
+    content: string;    
 }
 
 type ActionType = "CREATE" | "UPDATE" | "DELETE";

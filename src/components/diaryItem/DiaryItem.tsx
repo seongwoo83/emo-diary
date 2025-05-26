@@ -13,7 +13,7 @@ const DiaryItem = ({id, emotionId, createdDate, content}:DiaryType)=>{
             <div className={`img_section img_section_${emotionId}`}
             onClick={()=>nav(`/diary/${id}`)}
             >
-                <img src={getEmotionImage(id)} alt="emotion" />
+                <img src={getEmotionImage(emotionId)} alt="emotion" />
             </div>
             <div className="info_section"
             onClick={()=>nav(`/diary/${id}`)}>

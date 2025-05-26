@@ -49,7 +49,15 @@ function reducer(state: DiaryType[], action:Action){
 }
 
 export const DiaryStateContext = createContext(mockData);
-export const DiaryDispatchContext = createContext({});
+export const DiaryDispatchContext = createContext<{
+    onCreate: (input: Omit<DiaryType, "id">) => void;
+    onUpdate: (input: DiaryType) => void;
+    onDelete: (id: number) => void;
+}>({
+    onCreate: () => {},
+    onUpdate: () => {},
+    onDelete: () => {}
+});
 
 
 
