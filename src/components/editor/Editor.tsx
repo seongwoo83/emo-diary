@@ -1,32 +1,10 @@
 import "./Editor.scss";
 import EmotionItem from '../emotionItem/EmotionItem';
 import { Button } from '../button/Button';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { DiaryType } from "../../util/Types";
-
-const emotionList: {emotionId: number; emotionName: string}[] = [
-    {
-        emotionId : 1,
-        emotionName : "매우 좋음"
-    },
-    {
-        emotionId : 2,
-        emotionName : "좋음"
-    },
-    {
-        emotionId : 3,
-        emotionName : "보통"
-    },
-    {
-        emotionId : 4,
-        emotionName : "안좋음"
-    },
-    {
-        emotionId : 5,
-        emotionName : "매우 안좋음"
-    },
-]
+import { emotionList } from "../../util/constants";
 
 const getStringedDate:(targetDate:Date)=>string = (targetDate)=>{
     const year = targetDate.getFullYear();
@@ -36,7 +14,7 @@ const getStringedDate:(targetDate:Date)=>string = (targetDate)=>{
     return `${year}-${month < 10 ? "0"+String(month) : month }-${date < 10 ? "0"+String(date) : date}`
 }
 
-const Editor = ({onSubmit}:{onSubmit:(input:DiaryType)=>void}) => {
+const Editor = ({initData, onSubmit}:{initData?: DiaryType; onSubmit:(input:DiaryType)=>void}) => {
 
     const nav = useNavigate();
     const [input, setInput] = useState({
@@ -74,6 +52,15 @@ const Editor = ({onSubmit}:{onSubmit:(input:DiaryType)=>void}) => {
             content: input.content
         });
     }
+
+    useEffect(()=>{
+        if(initData){
+            setInput({
+                ...initData,
+                createdDate: new Date(initData.createdDate)
+            })
+        }
+    },[initData])
 
     return (
         <div className="editor">
