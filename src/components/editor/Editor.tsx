@@ -45,22 +45,27 @@ const Editor = ({onSubmit}:{onSubmit:(input:DiaryType)=>void}) => {
         content: ""
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onChangeInput = (e:any)=>{
+    const onChangeInput = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const name = e.target.name;
-        let value:unknown = e.target.value;
-        if(name === 'createdDate'){
-            value = new Date(e.target.value)
-        }else if(name === 'emotionId'){
-            value = Number(e.target.value)
-        }
-
+        const value = new Date(e.target.value)
         setInput({
             ...input,
             [name]: value
         })
     }
-
+    const onChangeEmotion = (target:{name:string, value:number})=>{
+        setInput({
+            ...input,
+            emotionId: target.value
+        })
+    }
+    const onChangeTextarea = (e:React.ChangeEvent<HTMLTextAreaElement>)=>{
+        setInput({
+            ...input,
+            content: e.target.value
+        })
+    }
+    
     const onClickSubmitButton = ()=>{
         onSubmit({
             id: 0, // 임시 ID, 실제로는 App.tsx에서 생성됨
@@ -82,11 +87,9 @@ const Editor = ({onSubmit}:{onSubmit:(input:DiaryType)=>void}) => {
                 {
                     emotionList.map(item=>(
                         <EmotionItem {...item} key={item.emotionId} isSelected={item.emotionId === input.emotionId} onClick={()=>{
-                            onChangeInput({
-                                target:{
-                                    name: "emotionId",
-                                    value: item.emotionId
-                                }
+                            onChangeEmotion({
+                                name: "emotionId",
+                                value: item.emotionId
                             })
                         }}/>
                     ))
@@ -95,7 +98,7 @@ const Editor = ({onSubmit}:{onSubmit:(input:DiaryType)=>void}) => {
             </section>
             <section className="content_section">
                 <h4>오늘의 일기</h4>
-                <textarea name="content" id="content" placeholder="오늘은 어땠나요?" value={input.content} onChange={onChangeInput}></textarea>
+                <textarea name="content" id="content" placeholder="오늘은 어땠나요?" value={input.content} onChange={onChangeTextarea}></textarea>
             </section>
             <section className="button_section">
                 <Button text={"취소하기"} type={"DEFAULT"} onClick={()=>nav(-1)}/>
