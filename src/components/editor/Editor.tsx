@@ -5,14 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { DiaryType } from "../../util/Types";
 import { emotionList } from "../../util/constants";
-
-const getStringedDate:(targetDate:Date)=>string = (targetDate)=>{
-    const year = targetDate.getFullYear();
-    const month = targetDate.getMonth()+1;
-    const date = targetDate.getDate();
-
-    return `${year}-${month < 10 ? "0"+String(month) : month }-${date < 10 ? "0"+String(date) : date}`
-}
+import { getStringedDate } from "../../util/getStringedDate";
 
 const Editor = ({initData, onSubmit}:{initData?: DiaryType; onSubmit:(input:DiaryType)=>void}) => {
 
