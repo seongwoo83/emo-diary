@@ -7,10 +7,10 @@ interface DiaryType{
     content: string;    
 }
 
-type ActionType = "CREATE" | "UPDATE" | "DELETE";
-interface Action{
-    type: ActionType;
-    data: DiaryType;
-}
+type Action = 
+    | { type: "INIT"; data: DiaryType[] }
+    | { type: "CREATE"; data: DiaryType }
+    | { type: "UPDATE"; data: DiaryType }
+    | { type: "DELETE"; data: DiaryType };
 
 export type {ButtonType, DiaryType, Action}

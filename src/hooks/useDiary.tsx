@@ -15,7 +15,7 @@ const useDiary = (id:number)=>{
 
 
     useEffect(()=>{
-        const currentDiaryItem = data.find((item) => String(item.id) === String(id));
+        const currentDiaryItem = data.find((item:DiaryType) => String(item.id) === String(id));
         if(!currentDiaryItem){
             window.alert("존재하지 않는 일기입니다.");
             nav("/", {replace: true});

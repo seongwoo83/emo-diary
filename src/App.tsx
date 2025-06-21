@@ -1,5 +1,5 @@
 import './App.css'
-import { createContext, useReducer, useRef } from 'react'
+import { createContext, useEffect, useReducer, useRef, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/home/Home'
 import Diary from './pages/diary/Diary'
@@ -13,42 +13,31 @@ import type { DiaryType, Action } from './util/Types'
   3. "/diary": 일기를 상세히 조회하는 Diary페이지
   4. "/edit": 일기를 수정하거나 작성하는 Edit페이지
 */
-const mockData:DiaryType[]=[
-  {
-    id: 1,
-    createdDate: new Date("2025-06-21").getTime(),
-    emotionId: 1,
-    content: "1번 일기 내용"
-  },
-  {
-    id: 2,
-    createdDate: new Date("2025-06-20").getTime(),
-    emotionId: 2,
-    content: "2번 일기 내용"
-  },
-  {
-    id: 3,
-    createdDate: new Date("2025-06-17").getTime(),
-    emotionId: 3,
-    content: "3번 일기 내용"
-  }
-]
-
-function reducer(state: DiaryType[], action:Action){
-  if (!action.data) return state;
+function reducer(state: DiaryType[], action: Action): DiaryType[] {
   switch(action.type){
-    case "CREATE" :   
-      return [action.data ,...state];
-    case "UPDATE" : 
-      return state.map(item=> item.id === action.data.id ? action.data : item);
-    case "DELETE" : 
-      return state.filter(item=> item.id !== action.data.id);
-    default : 
+    case "INIT" : 
+      return action.data;
+    case "CREATE" : {
+      const createState = [action.data, ...state];
+      localStorage.setItem("diary", JSON.stringify(createState));
+      return createState;
+    }
+    case "UPDATE" : {
+      const updateState = state.map(item => item.id === action.data.id ? action.data : item);
+      localStorage.setItem("diary", JSON.stringify(updateState));
+      return updateState;
+    }
+    case "DELETE" : {
+      const deleteState = state.filter(item => item.id !== action.data.id);
+      localStorage.setItem("diary", JSON.stringify(deleteState));
+      return deleteState;
+    }
+    default :
       return state;
   }
 }
 
-export const DiaryStateContext = createContext(mockData);
+export const DiaryStateContext = createContext<DiaryType[]>([]);
 export const DiaryDispatchContext = createContext<{
     onCreate: (input: Omit<DiaryType, "id">) => void;
     onUpdate: (input: DiaryType) => void;
@@ -62,9 +51,38 @@ export const DiaryDispatchContext = createContext<{
 
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, dispatch] = useReducer(reducer, []);
+  const idRef = useRef(0);
 
-  const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3);
+  useEffect(()=>{
+    const storedData = localStorage.getItem("diary");
+    if(!storedData){
+      return;
+    }
+    const parsedData:DiaryType[] = JSON.parse(storedData);
+    let maxId = 0;
+
+    if(!Array.isArray(parsedData)){
+      setIsLoading(false);
+      return;
+    }
+
+    parsedData.forEach((item:DiaryType)=>{
+      if(item.id > maxId){
+        maxId = item.id
+      }
+    })
+
+    idRef.current = maxId + 1;
+
+    dispatch({
+      type: "INIT",
+      data: parsedData
+    })
+    setIsLoading(false);
+
+  }, []);
 
 
   // 새로운 일기를 추가하는 기능
@@ -72,7 +90,7 @@ function App() {
     dispatch({
       type: "CREATE",
       data:{
-        id: ++idRef.current,
+        id: idRef.current++,
         createdDate,
         emotionId,
         content
@@ -108,6 +126,8 @@ function App() {
 
   return (
     <>
+    {
+      isLoading ? <div>로딩중입니다...</div> : 
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider value={{
           onCreate,
@@ -123,6 +143,7 @@ function App() {
           </Routes>
         </DiaryDispatchContext.Provider>
       </DiaryStateContext.Provider>
+    }
     </>
   )
 }
