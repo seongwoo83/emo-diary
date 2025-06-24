@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DiaryDispatchContext } from "../../App";
 import type { DiaryType } from "../../util/Types";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const New = () => {
     const nav = useNavigate();
+    usePageTitle("새 일기 쓰기");
 
     const { onCreate } = useContext(DiaryDispatchContext);
     

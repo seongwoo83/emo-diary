@@ -4,6 +4,7 @@ import DiaryList from "../../components/diaryList/DiaryList";
 import { useState, useContext } from "react";
 import { DiaryStateContext } from "../../App";
 import type { DiaryType } from "../../util/Types";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const getMonthlyData = (pivotDate:Date, data:DiaryType[])=>{
     const beginTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth(), 1, 0, 0, 0);
@@ -14,6 +15,7 @@ const getMonthlyData = (pivotDate:Date, data:DiaryType[])=>{
 
 const Home = () =>{
     const data = useContext(DiaryStateContext);
+    usePageTitle("Emo-Diary");
 
     const [pivotDate, setPivotDate] = useState(new Date());
     const monthlyData = getMonthlyData(pivotDate, data);

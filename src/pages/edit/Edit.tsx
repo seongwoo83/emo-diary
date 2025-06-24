@@ -6,10 +6,12 @@ import { useContext } from "react";
 import { DiaryDispatchContext } from "../../App";
 import type { DiaryType } from "../../util/Types";
 import useDiary from "../../hooks/useDiary";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const Edit = () => {
     const params = useParams();
     const nav = useNavigate();
+    usePageTitle(`${params.id}번 일기 수정`);
     const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
 
     const onClickDelete = ()=>{
